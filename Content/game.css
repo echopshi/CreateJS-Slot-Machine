@@ -1,0 +1,15 @@
+body{
+    /* image coming form https://hardrocksocialcasino.com/app/images/backgrounds/1_hri.jpg?v=1.0 */
+    background-image: url("/Assets/images/background.png");
+    font-family: Consolas;
+}
+
+#mainPage{
+    margin-right: auto;
+    margin-left: auto;
+    width: 980px;
+    height: 750px;
+    border-radius: 8px;
+	background-color: ivory;
+    padding: 5px;
+}
