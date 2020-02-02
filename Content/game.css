@@ -5,11 +5,14 @@ body{
 }
 
 #mainPage{
+    margin-top: 100px;
     margin-right: auto;
     margin-left: auto;
-    width: 980px;
-    height: 750px;
-    border-radius: 8px;
-	background-color: ivory;
-    padding: 5px;
+    width: 960px;
+    height: 600px;
+}
+
+
+#canvas{
+    background-image: url("/Assets/images/playing-background.PNG");
 }

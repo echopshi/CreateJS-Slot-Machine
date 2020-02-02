@@ -17,7 +17,6 @@ var objects;
     var Button = /** @class */ (function (_super) {
         __extends(Button, _super);
         function Button(imagePath, x, y, isCentered) {
-            if (imagePath === void 0) { imagePath = './Assets/images/button.png'; }
             if (x === void 0) { x = 0; }
             if (y === void 0) { y = 0; }
             if (isCentered === void 0) { isCentered = false; }
@@ -30,8 +29,18 @@ var objects;
                 _this.x = x;
                 _this.y = y;
             });
+            _this.on("mouseover", _this.MouseOver);
+            _this.on("mouseout", _this.MouseOut);
             return _this;
         }
+        Button.prototype.MouseOver = function () {
+            console.log("mouse over");
+            this.alpha = 0.7;
+        };
+        Button.prototype.MouseOut = function () {
+            console.log("mouse out");
+            this.alpha = 1.0;
+        };
         return Button;
     }(createjs.Bitmap));
     objects.Button = Button;

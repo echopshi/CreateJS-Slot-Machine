@@ -3,8 +3,21 @@ let Game = (function()
     // variable declarations
     let canvas:HTMLCanvasElement = document.getElementsByTagName('canvas')[0];
     let stage:createjs.Stage;
+    let playerMoney:number = 1000;
+    let jackpot:number = 5000;
+    let playerBet:number = 0;
+    let spinResult:string = "";
+    let machines:string = "";
+    let poop:number = 0;
+    let gift:number = 0;
+    let money:number = 0;
+    let moneyBag:number = 0;
+    let bicycle:number = 0;
+    let diamond:number = 0;
+    let house:number = 0;
+    let airplane:number = 0;
 
-    let slotMachineExample:createjs.Bitmap;
+    // user interact objects, label and button
     let userMoneyLabel:objects.Label;
     let jackpotLabel:objects.Label;
     let currentBetLable:objects.Label;
@@ -40,11 +53,36 @@ let Game = (function()
 
     function Main():void
     {
-        slotMachineExample = new createjs.Bitmap("/Assets/images/winning-slots.jpg");
-        stage.addChild(slotMachineExample);
+        let userMoneyLabel = new objects.Label("$1000", "42px", "Consolas", "#FCE98B", 470, 230, true);
+        stage.addChild(userMoneyLabel);
 
+        let jackpotLabel = new objects.Label("$5000", "42px", "Consolas", "#FCE98B", 300, 230, true);
+        stage.addChild(jackpotLabel);
+
+        let currentBetLable = new objects.Label("10", "32px", "Consolas", "#FCE98B", 100, 400, true);
+        stage.addChild(currentBetLable);
+
+        let resetButton = new objects.Button("./Assets/images/buttons/reset-button.png", 80, 70, true);
+        stage.addChild(resetButton);
+
+        let quitButton = new objects.Button("./Assets/images/buttons/close-button.png", 850, 70, true);
+        stage.addChild(quitButton);
+
+        let increaseBetButton = new objects.Button("./Assets/images/buttons/bet-up-arrow-button.png", 100, 335, true);
+        stage.addChild(increaseBetButton);
+
+        let decreaseBetButton = new objects.Button("./Assets/images/buttons/bet-down-arrow-button.png", 100, 465, true);
+        stage.addChild(decreaseBetButton);
+
+        let spinButton = new objects.Button("./Assets/images/buttons/spin-button.png", 640, 400, true);
+        stage.addChild(spinButton);
+        
+        let button = new objects.Button("./Assets/images/buttons/clickMeButton.png");
+        //stage.addChild(button);
         
     }
+
+    
     
     window.addEventListener('load', Start);
 })();
