@@ -1,6 +1,5 @@
 body{
-    /* image coming form https://hardrocksocialcasino.com/app/images/backgrounds/1_hri.jpg?v=1.0 */
-    background-image: url("/Assets/images/background.png");
+    background-image: url("../Assets/images/background.png");
     font-family: Consolas;
 }
 
@@ -14,5 +13,5 @@ body{
 
 
 #canvas{
-    background-image: url("/Assets/images/playing-background.PNG");
+    background-image: url("../Assets/images/playing-background.PNG");
 }
