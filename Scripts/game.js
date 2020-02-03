@@ -47,6 +47,11 @@ var Game = (function () {
         stage.update();
     }
     function Main() {
+        // TODO: include a start screen here
+        console.log("enter first stage!");
+        defineObjects();
+    }
+    function defineObjects() {
         var userMoneyLabel = new objects.Label("1000", "42px", "Consolas", "#FCE98B", 470, 230, true);
         stage.addChild(userMoneyLabel);
         var jackpotLabel = new objects.Label("5000", "42px", "Consolas", "#FCE98B", 300, 230, true);
@@ -61,10 +66,30 @@ var Game = (function () {
         quitButton.on("click", function () { quit(); });
         var increaseBetButton = new objects.Button("./Assets/images/buttons/bet-up-arrow-button.png", 100, 335, true);
         stage.addChild(increaseBetButton);
-        increaseBetButton.on("click", function () { increaseBet(); });
+        increaseBetButton.on("click", function () {
+            var betLevel = betRange.indexOf(playerBet);
+            if (betLevel + 1 < betRange.length && betRange[betLevel] <= playerMoney) {
+                betLevel += 1;
+                playerBet = betRange[betLevel];
+                playerBetLable.setText(playerBet + "");
+            }
+            else {
+                //TODO: tell player the bet is biggest and cannot increase more
+            }
+        });
         var decreaseBetButton = new objects.Button("./Assets/images/buttons/bet-down-arrow-button.png", 100, 465, true);
         stage.addChild(decreaseBetButton);
-        decreaseBetButton.on("click", function () { decreaseBet(); });
+        decreaseBetButton.on("click", function () {
+            var betLevel = betRange.indexOf(playerBet);
+            if ((betLevel - 1) >= 0 && betRange[betLevel] <= playerMoney) {
+                betLevel -= 1;
+                playerBet = betRange[betLevel];
+                playerBetLable.setText(playerBet + "");
+            }
+            else {
+                //TODO: tell player the bet is lowest and cannot decrease more
+            }
+        });
         var spinButton = new objects.Button("./Assets/images/buttons/spin-button.png", 640, 400, true);
         stage.addChild(spinButton);
         spinButton.on("click", function () { spin(); });
@@ -87,32 +112,6 @@ var Game = (function () {
             //spinResult3 = value[2];
             // TODO: show the images of results
             //this.determineWinnings();
-        }
-    }
-    function decreaseBet() {
-        console.log("decrease bet");
-        var betLevel = betRange.indexOf(playerBet);
-        if ((betLevel - 1) >= 0 && betRange[betLevel] <= playerMoney) {
-            betLevel -= 1;
-            playerBet = betRange[betLevel];
-            console.log(playerBet);
-            //playerBetLable.setText(playerBet+"");
-        }
-        else {
-            //TODO: tell player the bet is lowest and cannot decrease more
-        }
-    }
-    function increaseBet() {
-        console.log("increase bet");
-        var betLevel = betRange.indexOf(playerBet);
-        if (betLevel + 1 < betRange.length && betRange[betLevel] <= playerMoney) {
-            betLevel += 1;
-            playerBet = betRange[betLevel];
-            console.log(playerBet);
-            //playerBetLable.setText(playerBet+"");
-        }
-        else {
-            //TODO: tell player the bet is biggest and cannot increase more
         }
     }
     function quit() {
