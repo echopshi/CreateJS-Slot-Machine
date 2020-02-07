@@ -21,6 +21,8 @@ var objects;
             if (y === void 0) { y = 0; }
             if (isCentered === void 0) { isCentered = false; }
             var _this = _super.call(this, imagePath) || this;
+            _this.on("mouseover", _this.MouseOver);
+            _this.on("mouseout", _this.MouseOut);
             _this.image.addEventListener("load", function () {
                 if (isCentered) {
                     _this.regX = _this.getBounds().width * 0.5;
@@ -29,17 +31,15 @@ var objects;
                 _this.x = x;
                 _this.y = y;
             });
-            _this.on("mouseover", _this.MouseOver);
-            _this.on("mouseout", _this.MouseOut);
             return _this;
         }
         Button.prototype.MouseOver = function () {
             console.log("mouse over");
-            this.alpha = 0.7;
+            this.y += 5;
         };
         Button.prototype.MouseOut = function () {
             console.log("mouse out");
-            this.alpha = 1.0;
+            this.y -= 5;
         };
         return Button;
     }(createjs.Bitmap));

@@ -10,8 +10,3 @@ body{
     width: 960px;
     height: 600px;
 }
-
-
-#canvas{
-    background-image: url("../Assets/images/playing-background.PNG");
-}

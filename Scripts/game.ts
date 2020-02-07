@@ -10,6 +10,9 @@ let Game = (function () {
     let spinResult1: string = "";
     let spinResult2: string = "";
     let spinResult3: string = "";
+    let spinImage1: objects.Button;
+    let spinImage2: objects.Button;
+    let spinImage3: objects.Button;
     let poop: number = 0;
     let gift: number = 0;
     let money: number = 0;
@@ -23,6 +26,7 @@ let Game = (function () {
     let playerMoneyLabel: objects.Label;
     let jackpotLabel: objects.Label;
     let playerBetLable: objects.Label;
+    let noticeLable: objects.Label;
     let spinButton: objects.Button;
     let resetButton: objects.Button;
     let quitButton: objects.Button;
@@ -47,27 +51,42 @@ let Game = (function () {
      * The stage is then erased and redrawn 
      */
     function Update(): void {
-
         stage.update();
     }
 
     function Main(): void {
-        // TODO: include a start screen here
+        console.log("Game Start Screen!");
+        startScreen();
+    }
 
+    function startScreen():void{
+        let startBackground = new objects.Button("./Assets/images/start-background.png", 0, 0, false);
+        stage.addChild(startBackground);
 
-        console.log("enter first stage!");
-        defineObjects();
+        let startButton = new objects.Button("./Assets/images/buttons/start-button.png", 380, 450, true);
+        stage.addChild(startButton);
+        startButton.on("click", function(){
+            stage.removeAllChildren();
+            console.log("Main Game Screen!");
+            defineObjects();
+        });
     }
 
     function defineObjects(): void {
+        let background = new objects.Button("./Assets/images/playing-background.png", 0, 0, false);
+        stage.addChild(background);
+
         playerMoneyLabel = new objects.Label("1000", "42px", "Consolas", "#FCE98B", 470, 230, true);
         stage.addChild(playerMoneyLabel);
 
         jackpotLabel = new objects.Label("5000", "42px", "Consolas", "#FCE98B", 300, 230, true);
         stage.addChild(jackpotLabel);
 
-        playerBetLable = new objects.Label("10", "32px", "Consolas", "#FCE98B", 100, 400, true);
+        playerBetLable = new objects.Label("10", "32px", "Consolas", "#FCE98B", 90, 400, true);
         stage.addChild(playerBetLable);
+
+        noticeLable = new objects.Label(" ", "28px", "Consolas", "#FCE98B", 200, 60, true);
+        stage.addChild(noticeLable);
 
         resetButton = new objects.Button("./Assets/images/buttons/reset-button.png", 80, 70, true);
         stage.addChild(resetButton);
@@ -91,70 +110,80 @@ let Game = (function () {
     }
 
 
-    function resetAll():void{
-        console.log("reset!");
+    function resetAll(): void {
+        noticeLable.setText(" ");
         playerMoney = 1000;
-            jackpot = 5000;
-            playerBet = 10;
+        jackpot = 5000;
+        playerBet = 10;
+        playerBetLable.setText(playerBet + "");
+        playerMoneyLabel.setText(playerMoney + "");
+        jackpotLabel.setText(jackpot + "");
+        if (spinImage1 && spinImage2 && spinImage3) {
+            stage.removeChild(spinImage1);
+            stage.removeChild(spinImage2);
+            stage.removeChild(spinImage3);
+        }
+    }
+
+    function quit(): void {
+        // TODO: go to the start screen
+        stage.removeAllChildren();
+        startScreen();
+    }
+
+    function increaseBet(): void {
+        noticeLable.setText(" ");
+        let betLevel = betRange.indexOf(playerBet);
+        if (betLevel + 1 < betRange.length && betRange[betLevel + 1] <= playerMoney) {
+            betLevel += 1;
+            playerBet = betRange[betLevel];
             playerBetLable.setText(playerBet + "");
+        }
+        else {
+            noticeLable.setText("Reached Max Bet!");
+        }
+    }
+
+    function decreaseBet(): void {
+        noticeLable.setText(" ");
+        let betLevel = betRange.indexOf(playerBet);
+        if ((betLevel - 1) >= 0) {
+            betLevel -= 1;
+            playerBet = betRange[betLevel];
+            playerBetLable.setText(playerBet + "");
+        }
+        else {
+            noticeLable.setText("Reach Min Bet!");
+        }
+    }
+
+    function spin(): void {
+        noticeLable.setText(" ");
+        if (spinImage1 && spinImage2 && spinImage3) {
+            stage.removeChild(spinImage1);
+            stage.removeChild(spinImage2);
+            stage.removeChild(spinImage3);
+        }
+        // TODO: animation to show spin
+        if (playerMoney == 0 || playerBet > playerMoney) {
+            noticeLable.setText("No more Money, Reset to play again?");
+        }
+        else {
+            let value = Reels();
+            spinResult1 = "./Assets/images/symbols/" + value[0] + ".png";
+            spinResult2 = "./Assets/images/symbols/" + value[1] + ".png";
+            spinResult3 = "./Assets/images/symbols/" + value[2] + ".png";
+
+            spinImage1 = new objects.Button(spinResult1, 240, 430, true);
+            stage.addChild(spinImage1);
+            spinImage2 = new objects.Button(spinResult2, 370, 430, true);
+            stage.addChild(spinImage2);
+            spinImage3 = new objects.Button(spinResult3, 490, 430, true);
+            stage.addChild(spinImage3);
+
+            determineWinnings();
             playerMoneyLabel.setText(playerMoney + "");
-            jackpotLabel.setText(jackpot + "");
-            // TODO: clean the images on slot
-            console.log(playerMoney, playerBet);
-    }
-
-    function quit():void{
-        console.log("quit!");
-            // TODO: go to the start screen
-    }
-
-    function increaseBet():void{
-        console.log("increase bet");
-            let betLevel = betRange.indexOf(playerBet);
-            if (betLevel + 1 < betRange.length && betRange[betLevel] <= playerMoney) {
-                betLevel += 1;
-                playerBet = betRange[betLevel];
-                playerBetLable.setText(playerBet + "");
-            }
-            else {
-                //TODO: tell player the bet is biggest and cannot increase more
-                console.log("cannot increase more");
-            }
-    }
-
-    function decreaseBet():void{
-        console.log("decrease bet");
-            let betLevel = betRange.indexOf(playerBet);
-            if ((betLevel - 1) >= 0 && betRange[betLevel] <= playerMoney) {
-                betLevel -= 1;
-                playerBet = betRange[betLevel];
-                playerBetLable.setText(playerBet + "");
-            }
-            else {
-                //TODO: tell player the bet is lowest and cannot decrease more
-                console.log("cannot decrease more");
-            }
-    }
-
-    function spin():void{
-        console.log("spin");
-            if (playerMoney == 0) {
-                //TODO: ask if want to play again
-            }
-            else if (playerBet > playerMoney) {
-                // TODO: notify user no more money for this bet
-            }
-            else {
-                let value = Reels();
-                console.log(value[0], value[1], value[2]);
-                spinResult1 = value[0];
-                spinResult2 = value[1];
-                spinResult3 = value[2];
-                // TODO: show the images of results
-
-                determineWinnings();
-                playerMoneyLabel.setText(playerMoney + "");
-            }
+        }
     }
 
     /* Utility function to reset all fruit tallies */
@@ -176,7 +205,7 @@ let Game = (function () {
         let jackPotWin = Math.floor(Math.random() * 51 + 1);
         if (jackPotTry == jackPotWin) {
             // TODO: cheat control to win jackpot & notify player
-            console.log("You Won the $" + jackpot + " Jackpot!!");
+            noticeLable.setText("You Won the $" + jackpot + " Jackpot!!");
             playerMoney += jackpot;
             jackpot = 1000;
             jackpotLabel.setText(jackpot + "");
@@ -186,7 +215,7 @@ let Game = (function () {
     /* Utility function to show a win message and increase player money */
     function showWinMessage(): void {
         playerMoney += winnings;
-        // TODO: notify player
+        noticeLable.setText("Win!! Keep Doing!");
         resetMachineTally();
         checkJackPot();
     }
@@ -194,7 +223,7 @@ let Game = (function () {
     /* Utility function to show a loss message and reduce player money */
     function showLossMessage(): void {
         playerMoney -= playerBet;
-        // TODO: notify player
+        noticeLable.setText("Loss! Try Again!");
         resetMachineTally();
     }
 
@@ -310,8 +339,6 @@ let Game = (function () {
             showLossMessage();
         }
     }
-
-
 
     window.addEventListener('load', Start);
 })();

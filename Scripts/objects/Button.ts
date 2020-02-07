@@ -6,6 +6,8 @@ module objects
             x:number = 0, y:number = 0, isCentered:boolean = false)
         {
             super(imagePath);
+            this.on("mouseover", this.MouseOver);
+            this.on("mouseout", this.MouseOut);
 
             this.image.addEventListener("load", ()=> {
 
@@ -18,19 +20,16 @@ module objects
                 this.x = x;
                 this.y = y;
             });
-
-            this.on("mouseover", this.MouseOver);
-            this.on("mouseout", this.MouseOut);
         }
 
         MouseOver():void{
             console.log("mouse over");
-            this.alpha = 0.7;
+            this.y += 5;
         }
 
         MouseOut():void{
             console.log("mouse out");
-            this.alpha = 1.0;
+            this.y -= 5;
         }
         
     }
