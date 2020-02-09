@@ -2,13 +2,10 @@ module objects
 {
     export class Button extends createjs.Bitmap
     {
-        constructor(imagePath:string,
+        constructor(imagePath:string = './Assets/images/buttons/start-button.png',
             x:number = 0, y:number = 0, isCentered:boolean = false)
         {
             super(imagePath);
-            this.on("mouseover", this.MouseOver);
-            this.on("mouseout", this.MouseOut);
-
             this.image.addEventListener("load", ()=> {
 
                 if(isCentered)
@@ -23,13 +20,16 @@ module objects
         }
 
         MouseOver():void{
-            console.log("mouse over");
-            this.y += 5;
+            this.alpha = 0.7;
         }
 
         MouseOut():void{
-            console.log("mouse out");
-            this.y -= 5;
+            this.alpha = 1;
+        }
+
+        HoverOn():void{
+            this.on("mouseover", this.MouseOver);
+            this.on("mouseout", this.MouseOut);
         }
         
     }
