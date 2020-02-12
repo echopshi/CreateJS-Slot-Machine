@@ -33,8 +33,7 @@ var scenes;
             this.addChild(this.startButton);
             this.Main();
         };
-        Start.prototype.Update = function () {
-        };
+        Start.prototype.Update = function () { };
         Start.prototype.Main = function () {
             this.startButton.HoverOn();
             this.startButton.on("click", function () {

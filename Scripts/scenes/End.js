@@ -21,8 +21,8 @@ var scenes;
         function End() {
             var _this = _super.call(this) || this;
             _this.endBackground = new objects.Button("./Assets/images/start-background.png", 0, 0, false);
-            _this.thankyouLabel = new objects.Label("Thank You!", "42px", "Consolas", "Red", 300, 230, true);
-            _this.restartButton = new objects.Button("./Assets/images/buttons/start-button.png", 380, 450, true);
+            _this.thankyouLabel = new objects.Label("Thank You for playing!", "42px", "Consolas", "Red", 380, 230, true);
+            _this.restartButton = new objects.Button("./Assets/images/buttons/restart-button.png", 380, 450, true);
             _this.Start();
             return _this;
         }
@@ -33,8 +33,7 @@ var scenes;
             this.addChild(this.restartButton);
             this.Main();
         };
-        End.prototype.Update = function () {
-        };
+        End.prototype.Update = function () { };
         End.prototype.Main = function () {
             this.restartButton.HoverOn();
             this.restartButton.on("click", function () {

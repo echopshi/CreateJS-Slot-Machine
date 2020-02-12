@@ -1,7 +1,7 @@
 "use strict";
 var Game = (function () {
     // variable declarations
-    var canvas = document.getElementsByTagName('canvas')[0];
+    var canvas = document.getElementsByTagName("canvas")[0];
     var stage;
     var currentSceneState;
     var currentScene;
@@ -13,7 +13,7 @@ var Game = (function () {
         console.log("%c Game Started!", "color: blue; font-size: 20px; font-weight: bold;");
         stage = new createjs.Stage(canvas);
         createjs.Ticker.framerate = 60; // 60 FPS
-        createjs.Ticker.on('tick', Update);
+        createjs.Ticker.on("tick", Update);
         stage.enableMouseOver(20);
         currentSceneState = scenes.State.NO_SCENE;
         config.GameConfig.SCENE_STATE = scenes.State.START;
@@ -49,6 +49,6 @@ var Game = (function () {
         stage.addChild(currentScene);
         currentSceneState = config.GameConfig.SCENE_STATE;
     }
-    window.addEventListener('load', Start);
+    window.addEventListener("load", Start);
 })();
 //# sourceMappingURL=game.js.map
