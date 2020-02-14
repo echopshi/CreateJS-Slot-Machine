@@ -12,12 +12,19 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+/**
+ * Author: Hang Li
+ * Student Number: 300993981
+ * Creation Date: Feb 14, 2020
+ * Game App Description: CreateJS Slot Machine
+ * Revision History: available in GitHub
+ */
 var objects;
 (function (objects) {
     var Button = /** @class */ (function (_super) {
         __extends(Button, _super);
         function Button(imagePath, x, y, isCentered) {
-            if (imagePath === void 0) { imagePath = './Assets/images/buttons/start-button.png'; }
+            if (imagePath === void 0) { imagePath = "./Assets/images/buttons/start-button.png"; }
             if (x === void 0) { x = 0; }
             if (y === void 0) { y = 0; }
             if (isCentered === void 0) { isCentered = false; }

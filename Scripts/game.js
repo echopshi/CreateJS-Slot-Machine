@@ -1,4 +1,11 @@
 "use strict";
+/**
+ * Author: Hang Li
+ * Student Number: 300993981
+ * Creation Date: Feb 14, 2020
+ * Game App Description: CreateJS Slot Machine
+ * Revision History: available in GitHub
+ */
 var Game = (function () {
     // variable declarations
     var canvas = document.getElementsByTagName("canvas")[0];
@@ -34,6 +41,10 @@ var Game = (function () {
         currentScene.Update();
         stage.update();
     }
+    /**
+     * This function is the main function which handles all the functionalities
+     * In this case, it is switching the scenes based on the scene state defined in config file
+     */
     function Main() {
         console.log("Switching Scenes!");
         if (currentSceneState != scenes.State.NO_SCENE) {
@@ -61,8 +72,10 @@ var Game = (function () {
         stage.addChild(currentScene);
         currentSceneState = config.GameConfig.SCENE_STATE;
     }
-    // add key event handler to make cheat code for jackpot
-    // if player pressed "J" key, next time player wins, it will give Jackpot for sure
+    /**
+     * add key event handler to make cheat code for jackpot
+     * if player pressed "J" key, next time player wins, it will give Jackpot for sure
+     */
     window.addEventListener("keydown", function (event) {
         if (currentSceneState == scenes.State.PLAY &&
             playScene &&

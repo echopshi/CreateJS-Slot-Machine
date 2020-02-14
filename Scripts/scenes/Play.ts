@@ -1,9 +1,17 @@
+/**
+ * Author: Hang Li
+ * Student Number: 300993981
+ * Creation Date: Feb 14, 2020
+ * Game App Description: CreateJS Slot Machine
+ * Revision History: available in GitHub
+ */
 module scenes {
   export class Play extends objects.Scene {
     // PRIVATE INSTANCE MEMEBERS
     playerMoney: number = 1000;
     jackpot: number = 5000;
     jackpotCheat: boolean = false;
+    winnings: number = 0;
     playerBet: number = 10;
     betRange: number[] = [
       10,
@@ -24,7 +32,7 @@ module scenes {
       900,
       1000
     ];
-    winnings: number = 0;
+    // spin result variables
     spinResult1: string = "";
     spinResult2: string = "";
     spinResult3: string = "";
@@ -35,6 +43,7 @@ module scenes {
     spinImage3: objects.Button;
     spinImage4: objects.Button;
     spinImage5: objects.Button;
+    // count of symbols
     poop: number = 0;
     gift: number = 0;
     money: number = 0;
@@ -43,14 +52,15 @@ module scenes {
     diamond: number = 0;
     house: number = 0;
     airplane: number = 0;
+    // background image
     background: objects.Button;
+    // button sound effects
     endSound: string = "Stop_sound";
     resetSound: string = "Reset_sound";
     betSound: string = "Bet_sound";
     winSound: string = "Win_sound";
     lossSound: string = "Loss_sound";
     jackpotSound: string = "Jackpot_sound";
-
     // user interact objects, label and button
     playerMoneyLabel: objects.Label;
     jackpotLabel: objects.Label;
@@ -184,8 +194,8 @@ module scenes {
 
     public Update(): void {}
 
+    // main functions for interact buttons
     public Main(): void {
-      // main functions for interact buttons
       this.resetButton.HoverOn();
       this.resetButton.on("click", () => {
         this.resetAll();
@@ -212,7 +222,9 @@ module scenes {
       });
     }
 
-    // set all labels and objects to default status
+    /**
+     * set all labels and objects to default status
+     */
     resetAll(): void {
       createjs.Sound.play(this.resetSound);
       this.winningLabel.setText(" ");
@@ -225,8 +237,10 @@ module scenes {
       this.cleanImages();
     }
 
-    // increase player's current bet when they click on button
-    // checks the current bet level in bet range, and increase the bet amount by level
+    /**
+     * increase player's current bet when they click on button
+     * checks the current bet level in bet range, and increase the bet amount by level
+     */
     increaseBet(): void {
       this.winningLabel.setText(" ");
       let betLevel = this.betRange.indexOf(this.playerBet);
@@ -243,8 +257,10 @@ module scenes {
       }
     }
 
-    // decrease player's current bet when they click on button
-    // checks the current bet level in bet range, and decrease the bet amount by level
+    /**
+     * decrease player's current bet when they click on button
+     * checks the current bet level in bet range, and decrease the bet amount by level
+     */
     decreaseBet(): void {
       this.winningLabel.setText(" ");
       let betLevel = this.betRange.indexOf(this.playerBet);
@@ -258,14 +274,20 @@ module scenes {
       }
     }
 
-    // actual spin function, calls Reels() function, display the slot images
-    // and then determine win or loss
+    /**
+     * actual spin function, calls Reels() function
+     * display the slot images
+     * then determine win or loss
+     */
     spin(): void {
+      // clean the previous winning label and images
       this.winningLabel.setText(" ");
       this.cleanImages();
+      // check if player have enough money to bet
       if (this.playerMoney == 0 || this.playerBet > this.playerMoney) {
         createjs.Sound.play(this.endSound);
       } else {
+        // get the result from Reels function
         let value = this.Reels();
 
         this.spinResult1 = "./Assets/images/symbols/" + value[0] + ".png";
@@ -361,9 +383,11 @@ module scenes {
       }
     }
 
-    // actual Reel functions
-    // iteration 5 times to get the reel result
-    // each time check the random result and match to the symbol
+    /**
+     * actual Reel functions
+     * run 5 iterations to get the reel result
+     * each time check the random result and match to the symbol
+     */
     Reels(): string[] {
       let betLine = ["", "", "", "", ""];
       let outcome = [0, 0, 0, 0, 0];
@@ -407,10 +431,12 @@ module scenes {
       return betLine;
     }
 
-    // defines the winning stage
-    // if poop bigger than or equals to 2, player will lose their bet amount
-    // else, will check the winning stage for occurance of specific symbols
-    // the biggest winning will be exact 5 airplanes to win 2000 times player's bet
+    /**
+     * defines the winning stage
+     * if poop larger than or equals to 2, player will lose their bet amount
+     * else, will check the winning stage for occurance of specific symbols
+     * the biggest winning will be exact 5 airplanes to win 2000 times player's bet
+     */
     determineWinnings() {
       if (this.poop < 2) {
         if (this.gift == 5) {

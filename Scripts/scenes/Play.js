@@ -12,6 +12,13 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+/**
+ * Author: Hang Li
+ * Student Number: 300993981
+ * Creation Date: Feb 14, 2020
+ * Game App Description: CreateJS Slot Machine
+ * Revision History: available in GitHub
+ */
 var scenes;
 (function (scenes) {
     var Play = /** @class */ (function (_super) {
@@ -24,6 +31,7 @@ var scenes;
             _this.playerMoney = 1000;
             _this.jackpot = 5000;
             _this.jackpotCheat = false;
+            _this.winnings = 0;
             _this.playerBet = 10;
             _this.betRange = [
                 10,
@@ -44,12 +52,13 @@ var scenes;
                 900,
                 1000
             ];
-            _this.winnings = 0;
+            // spin result variables
             _this.spinResult1 = "";
             _this.spinResult2 = "";
             _this.spinResult3 = "";
             _this.spinResult4 = "";
             _this.spinResult5 = "";
+            // count of symbols
             _this.poop = 0;
             _this.gift = 0;
             _this.money = 0;
@@ -58,6 +67,7 @@ var scenes;
             _this.diamond = 0;
             _this.house = 0;
             _this.airplane = 0;
+            // button sound effects
             _this.endSound = "Stop_sound";
             _this.resetSound = "Reset_sound";
             _this.betSound = "Bet_sound";
@@ -106,9 +116,9 @@ var scenes;
             this.Main();
         };
         Play.prototype.Update = function () { };
+        // main functions for interact buttons
         Play.prototype.Main = function () {
             var _this = this;
-            // main functions for interact buttons
             this.resetButton.HoverOn();
             this.resetButton.on("click", function () {
                 _this.resetAll();
@@ -130,7 +140,9 @@ var scenes;
                 _this.spin();
             });
         };
-        // set all labels and objects to default status
+        /**
+         * set all labels and objects to default status
+         */
         Play.prototype.resetAll = function () {
             createjs.Sound.play(this.resetSound);
             this.winningLabel.setText(" ");
@@ -142,8 +154,10 @@ var scenes;
             this.jackpotLabel.setText(this.jackpot + "");
             this.cleanImages();
         };
-        // increase player's current bet when they click on button
-        // checks the current bet level in bet range, and increase the bet amount by level
+        /**
+         * increase player's current bet when they click on button
+         * checks the current bet level in bet range, and increase the bet amount by level
+         */
         Play.prototype.increaseBet = function () {
             this.winningLabel.setText(" ");
             var betLevel = this.betRange.indexOf(this.playerBet);
@@ -158,8 +172,10 @@ var scenes;
                 createjs.Sound.play(this.endSound);
             }
         };
-        // decrease player's current bet when they click on button
-        // checks the current bet level in bet range, and decrease the bet amount by level
+        /**
+         * decrease player's current bet when they click on button
+         * checks the current bet level in bet range, and decrease the bet amount by level
+         */
         Play.prototype.decreaseBet = function () {
             this.winningLabel.setText(" ");
             var betLevel = this.betRange.indexOf(this.playerBet);
@@ -173,15 +189,21 @@ var scenes;
                 createjs.Sound.play(this.endSound);
             }
         };
-        // actual spin function, calls Reels() function, display the slot images
-        // and then determine win or loss
+        /**
+         * actual spin function, calls Reels() function
+         * display the slot images
+         * then determine win or loss
+         */
         Play.prototype.spin = function () {
+            // clean the previous winning label and images
             this.winningLabel.setText(" ");
             this.cleanImages();
+            // check if player have enough money to bet
             if (this.playerMoney == 0 || this.playerBet > this.playerMoney) {
                 createjs.Sound.play(this.endSound);
             }
             else {
+                // get the result from Reels function
                 var value = this.Reels();
                 this.spinResult1 = "./Assets/images/symbols/" + value[0] + ".png";
                 this.spinResult2 = "./Assets/images/symbols/" + value[1] + ".png";
@@ -266,9 +288,11 @@ var scenes;
                 return !value;
             }
         };
-        // actual Reel functions
-        // iteration 5 times to get the reel result
-        // each time check the random result and match to the symbol
+        /**
+         * actual Reel functions
+         * run 5 iterations to get the reel result
+         * each time check the random result and match to the symbol
+         */
         Play.prototype.Reels = function () {
             var betLine = ["", "", "", "", ""];
             var outcome = [0, 0, 0, 0, 0];
@@ -311,10 +335,12 @@ var scenes;
             }
             return betLine;
         };
-        // defines the winning stage
-        // if poop bigger than or equals to 2, player will lose their bet amount
-        // else, will check the winning stage for occurance of specific symbols
-        // the biggest winning will be exact 5 airplanes to win 2000 times player's bet
+        /**
+         * defines the winning stage
+         * if poop larger than or equals to 2, player will lose their bet amount
+         * else, will check the winning stage for occurance of specific symbols
+         * the biggest winning will be exact 5 airplanes to win 2000 times player's bet
+         */
         Play.prototype.determineWinnings = function () {
             if (this.poop < 2) {
                 if (this.gift == 5) {
