@@ -28,7 +28,7 @@ var scenes;
         function Start() {
             var _this = _super.call(this) || this;
             _this.startBackground = new objects.Button("./Assets/images/start-background.png", 0, 0, false);
-            _this.slotMachineGraphic = new objects.Button("./Assets/images/slotMachineHolder.PNG", 280, 200, false);
+            _this.slotMachineGraphic = new objects.Button("./Assets/images/slotMachineHolder.png", 280, 200, false);
             _this.startButton = new objects.Button("./Assets/images/buttons/start-button.png", 380, 450, true);
             _this.Start();
             return _this;

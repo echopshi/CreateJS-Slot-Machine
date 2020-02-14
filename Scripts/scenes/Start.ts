@@ -25,7 +25,7 @@ module scenes {
         false
       );
       this.slotMachineGraphic = new objects.Button(
-        "./Assets/images/slotMachineHolder.PNG",
+        "./Assets/images/slotMachineHolder.png",
         280,
         200,
         false
