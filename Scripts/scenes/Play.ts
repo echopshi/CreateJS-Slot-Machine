@@ -1,8 +1,9 @@
 module scenes {
   export class Play extends objects.Scene {
     // PRIVATE INSTANCE MEMEBERS
-    playerMoney: number = 500;
+    playerMoney: number = 1000;
     jackpot: number = 5000;
+    jackpotCheat: boolean = false;
     playerBet: number = 10;
     betRange: number[] = [
       10,
@@ -43,6 +44,12 @@ module scenes {
     house: number = 0;
     airplane: number = 0;
     background: objects.Button;
+    endSound: string = "Stop_sound";
+    resetSound: string = "Reset_sound";
+    betSound: string = "Bet_sound";
+    winSound: string = "Win_sound";
+    lossSound: string = "Loss_sound";
+    jackpotSound: string = "Jackpot_sound";
 
     // user interact objects, label and button
     playerMoneyLabel: objects.Label;
@@ -158,6 +165,20 @@ module scenes {
       this.addChild(this.decreaseBetButton);
       this.addChild(this.spinButton);
 
+      // load the sound effects
+      createjs.Sound.registerSound("./Assets/sounds/stop.wav", this.endSound);
+      createjs.Sound.registerSound(
+        "./Assets/sounds/reset.mp3",
+        this.resetSound
+      );
+      createjs.Sound.registerSound("./Assets/sounds/bet.mp3", this.betSound);
+      createjs.Sound.registerSound("./Assets/sounds/win.mp3", this.winSound);
+      createjs.Sound.registerSound("./Assets/sounds/loss.wav", this.lossSound);
+      createjs.Sound.registerSound(
+        "./Assets/sounds/jackpot.mp3",
+        this.jackpotSound
+      );
+
       this.Main();
     }
 
@@ -193,7 +214,7 @@ module scenes {
 
     // set all labels and objects to default status
     resetAll(): void {
-      // TODO: add sound effects
+      createjs.Sound.play(this.resetSound);
       this.winningLabel.setText(" ");
       this.playerMoney = 1000;
       this.jackpot = 5000;
@@ -213,11 +234,12 @@ module scenes {
         betLevel + 1 < this.betRange.length &&
         this.betRange[betLevel + 1] <= this.playerMoney
       ) {
+        createjs.Sound.play(this.betSound);
         betLevel += 1;
         this.playerBet = this.betRange[betLevel];
         this.playerBetLabel.setText(this.playerBet + "");
       } else {
-        // TODO: add sound effects
+        createjs.Sound.play(this.endSound);
       }
     }
 
@@ -227,11 +249,12 @@ module scenes {
       this.winningLabel.setText(" ");
       let betLevel = this.betRange.indexOf(this.playerBet);
       if (betLevel - 1 >= 0) {
+        createjs.Sound.play(this.betSound);
         betLevel -= 1;
         this.playerBet = this.betRange[betLevel];
         this.playerBetLabel.setText(this.playerBet + "");
       } else {
-        // TODO: add sound effects
+        createjs.Sound.play(this.endSound);
       }
     }
 
@@ -241,7 +264,7 @@ module scenes {
       this.winningLabel.setText(" ");
       this.cleanImages();
       if (this.playerMoney == 0 || this.playerBet > this.playerMoney) {
-        // TODO: add disabled effect
+        createjs.Sound.play(this.endSound);
       } else {
         let value = this.Reels();
 
@@ -297,22 +320,26 @@ module scenes {
     }
 
     checkJackPot(): void {
-      /* compare two random values */
+      /* compare two random values, if they are the same then got jackpot */
       let jackPotTry = Math.floor(Math.random() * 51 + 1);
       let jackPotWin = Math.floor(Math.random() * 51 + 1);
-      if (jackPotTry == jackPotWin) {
-        // TODO: cheat control to win jackpot & notify player
+      // cheat control to win jackpot, control based on key event
+      // when user pressed key "J", game.ts will set jackpotCheat variable to true
+      // player will win jackpot either the randome numbers is same, or used the cheat code
+      // set cheat code back to false after got jackpot
+      if (jackPotTry == jackPotWin || this.jackpotCheat) {
+        createjs.Sound.play(this.jackpotSound);
         this.playerMoney += this.jackpot;
-        // TODO: add sound effects
         this.jackpot = 1000;
         this.jackpotLabel.setText(this.jackpot + "");
+        this.jackpotCheat = false;
       }
     }
 
     // display winning, add winning amount to player's balance
     showWinMessage(): void {
       this.playerMoney += this.winnings;
-      // TODO: add sound effects
+      createjs.Sound.play(this.winSound);
       this.winningLabel.setText(this.winnings + "");
       this.resetMachineTally();
       this.checkJackPot();
@@ -321,7 +348,7 @@ module scenes {
     // subtract player's bet amount from player's balance
     showLossMessage(): void {
       this.playerMoney -= this.playerBet;
-      // TODO: add sound effects
+      createjs.Sound.play(this.lossSound);
       this.resetMachineTally();
     }
 
@@ -340,7 +367,6 @@ module scenes {
     Reels(): string[] {
       let betLine = ["", "", "", "", ""];
       let outcome = [0, 0, 0, 0, 0];
-      // TODO: add sound effects
       for (let spin = 0; spin < 5; spin++) {
         outcome[spin] = Math.floor(Math.random() * 77 + 1);
         switch (outcome[spin]) {
@@ -440,11 +466,11 @@ module scenes {
         } else if (this.diamond == 2) {
           this.winnings = this.playerBet * 5;
         } else if (this.house == 2) {
-          this.winnings = this.playerBet * 10;
+          this.winnings = this.playerBet * 5;
         } else if (this.airplane == 2) {
-          this.winnings = this.playerBet * 20;
-        } else if (this.airplane == 1) {
           this.winnings = this.playerBet * 10;
+        } else if (this.airplane == 1) {
+          this.winnings = this.playerBet * 5;
         } else {
           this.winnings = this.playerBet * 1;
         }

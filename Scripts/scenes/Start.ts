@@ -2,7 +2,7 @@ module scenes {
   export class Start extends objects.Scene {
     // PRIVATE INSTANCE MEMEBERS
     startBackground: objects.Button;
-    weclomeLabel: objects.Label;
+    slotMachineGraphic: objects.Button;
     startButton: objects.Button;
 
     // PUBLIC PROPERTIES
@@ -17,14 +17,11 @@ module scenes {
         0,
         false
       );
-      this.weclomeLabel = new objects.Label(
-        "Weclome!",
-        "42px",
-        "Consolas",
-        "Red",
-        300,
-        230,
-        true
+      this.slotMachineGraphic = new objects.Button(
+        "./Assets/images/slotMachineHolder.PNG",
+        280,
+        200,
+        false
       );
       this.startButton = new objects.Button(
         "./Assets/images/buttons/start-button.png",
@@ -39,7 +36,7 @@ module scenes {
     // PUBLIC METHODS
     public Start(): void {
       this.addChild(this.startBackground);
-      this.addChild(this.weclomeLabel);
+      this.addChild(this.slotMachineGraphic);
       this.addChild(this.startButton);
 
       this.Main();

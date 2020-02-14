@@ -21,7 +21,7 @@ var scenes;
         function Start() {
             var _this = _super.call(this) || this;
             _this.startBackground = new objects.Button("./Assets/images/start-background.png", 0, 0, false);
-            _this.weclomeLabel = new objects.Label("Weclome!", "42px", "Consolas", "Red", 300, 230, true);
+            _this.slotMachineGraphic = new objects.Button("./Assets/images/slotMachineHolder.PNG", 280, 200, false);
             _this.startButton = new objects.Button("./Assets/images/buttons/start-button.png", 380, 450, true);
             _this.Start();
             return _this;
@@ -29,7 +29,7 @@ var scenes;
         // PUBLIC METHODS
         Start.prototype.Start = function () {
             this.addChild(this.startBackground);
-            this.addChild(this.weclomeLabel);
+            this.addChild(this.slotMachineGraphic);
             this.addChild(this.startButton);
             this.Main();
         };

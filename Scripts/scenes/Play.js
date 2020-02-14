@@ -21,8 +21,9 @@ var scenes;
         function Play() {
             var _this = _super.call(this) || this;
             // PRIVATE INSTANCE MEMEBERS
-            _this.playerMoney = 500;
+            _this.playerMoney = 1000;
             _this.jackpot = 5000;
+            _this.jackpotCheat = false;
             _this.playerBet = 10;
             _this.betRange = [
                 10,
@@ -57,6 +58,12 @@ var scenes;
             _this.diamond = 0;
             _this.house = 0;
             _this.airplane = 0;
+            _this.endSound = "Stop_sound";
+            _this.resetSound = "Reset_sound";
+            _this.betSound = "Bet_sound";
+            _this.winSound = "Win_sound";
+            _this.lossSound = "Loss_sound";
+            _this.jackpotSound = "Jackpot_sound";
             _this.spinImage1 = new objects.Button();
             _this.spinImage2 = new objects.Button();
             _this.spinImage3 = new objects.Button();
@@ -89,6 +96,13 @@ var scenes;
             this.addChild(this.increaseBetButton);
             this.addChild(this.decreaseBetButton);
             this.addChild(this.spinButton);
+            // load the sound effects
+            createjs.Sound.registerSound("./Assets/sounds/stop.wav", this.endSound);
+            createjs.Sound.registerSound("./Assets/sounds/reset.mp3", this.resetSound);
+            createjs.Sound.registerSound("./Assets/sounds/bet.mp3", this.betSound);
+            createjs.Sound.registerSound("./Assets/sounds/win.mp3", this.winSound);
+            createjs.Sound.registerSound("./Assets/sounds/loss.wav", this.lossSound);
+            createjs.Sound.registerSound("./Assets/sounds/jackpot.mp3", this.jackpotSound);
             this.Main();
         };
         Play.prototype.Update = function () { };
@@ -118,7 +132,7 @@ var scenes;
         };
         // set all labels and objects to default status
         Play.prototype.resetAll = function () {
-            // TODO: add sound effects
+            createjs.Sound.play(this.resetSound);
             this.winningLabel.setText(" ");
             this.playerMoney = 1000;
             this.jackpot = 5000;
@@ -135,12 +149,13 @@ var scenes;
             var betLevel = this.betRange.indexOf(this.playerBet);
             if (betLevel + 1 < this.betRange.length &&
                 this.betRange[betLevel + 1] <= this.playerMoney) {
+                createjs.Sound.play(this.betSound);
                 betLevel += 1;
                 this.playerBet = this.betRange[betLevel];
                 this.playerBetLabel.setText(this.playerBet + "");
             }
             else {
-                // TODO: add sound effects
+                createjs.Sound.play(this.endSound);
             }
         };
         // decrease player's current bet when they click on button
@@ -149,12 +164,13 @@ var scenes;
             this.winningLabel.setText(" ");
             var betLevel = this.betRange.indexOf(this.playerBet);
             if (betLevel - 1 >= 0) {
+                createjs.Sound.play(this.betSound);
                 betLevel -= 1;
                 this.playerBet = this.betRange[betLevel];
                 this.playerBetLabel.setText(this.playerBet + "");
             }
             else {
-                // TODO: add sound effects
+                createjs.Sound.play(this.endSound);
             }
         };
         // actual spin function, calls Reels() function, display the slot images
@@ -163,7 +179,7 @@ var scenes;
             this.winningLabel.setText(" ");
             this.cleanImages();
             if (this.playerMoney == 0 || this.playerBet > this.playerMoney) {
-                // TODO: add disabled effect
+                createjs.Sound.play(this.endSound);
             }
             else {
                 var value = this.Reels();
@@ -212,21 +228,25 @@ var scenes;
             this.airplane = 0;
         };
         Play.prototype.checkJackPot = function () {
-            /* compare two random values */
+            /* compare two random values, if they are the same then got jackpot */
             var jackPotTry = Math.floor(Math.random() * 51 + 1);
             var jackPotWin = Math.floor(Math.random() * 51 + 1);
-            if (jackPotTry == jackPotWin) {
-                // TODO: cheat control to win jackpot & notify player
+            // cheat control to win jackpot, control based on key event
+            // when user pressed key "J", game.ts will set jackpotCheat variable to true
+            // player will win jackpot either the randome numbers is same, or used the cheat code
+            // set cheat code back to false after got jackpot
+            if (jackPotTry == jackPotWin || this.jackpotCheat) {
+                createjs.Sound.play(this.jackpotSound);
                 this.playerMoney += this.jackpot;
-                // TODO: add sound effects
                 this.jackpot = 1000;
                 this.jackpotLabel.setText(this.jackpot + "");
+                this.jackpotCheat = false;
             }
         };
         // display winning, add winning amount to player's balance
         Play.prototype.showWinMessage = function () {
             this.playerMoney += this.winnings;
-            // TODO: add sound effects
+            createjs.Sound.play(this.winSound);
             this.winningLabel.setText(this.winnings + "");
             this.resetMachineTally();
             this.checkJackPot();
@@ -234,7 +254,7 @@ var scenes;
         // subtract player's bet amount from player's balance
         Play.prototype.showLossMessage = function () {
             this.playerMoney -= this.playerBet;
-            // TODO: add sound effects
+            createjs.Sound.play(this.lossSound);
             this.resetMachineTally();
         };
         // use to check the range of reels when using random number
@@ -252,7 +272,6 @@ var scenes;
         Play.prototype.Reels = function () {
             var betLine = ["", "", "", "", ""];
             var outcome = [0, 0, 0, 0, 0];
-            // TODO: add sound effects
             for (var spin = 0; spin < 5; spin++) {
                 outcome[spin] = Math.floor(Math.random() * 77 + 1);
                 switch (outcome[spin]) {
@@ -377,13 +396,13 @@ var scenes;
                     this.winnings = this.playerBet * 5;
                 }
                 else if (this.house == 2) {
-                    this.winnings = this.playerBet * 10;
+                    this.winnings = this.playerBet * 5;
                 }
                 else if (this.airplane == 2) {
-                    this.winnings = this.playerBet * 20;
+                    this.winnings = this.playerBet * 10;
                 }
                 else if (this.airplane == 1) {
-                    this.winnings = this.playerBet * 10;
+                    this.winnings = this.playerBet * 5;
                 }
                 else {
                     this.winnings = this.playerBet * 1;

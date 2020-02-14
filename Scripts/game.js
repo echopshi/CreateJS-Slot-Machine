@@ -5,6 +5,9 @@ var Game = (function () {
     var stage;
     var currentSceneState;
     var currentScene;
+    var playScene;
+    var startSound = "Start_sound";
+    var backgroundSound = "Background_sound";
     /**
      * This method initializes the CreateJS (EaselJS) Library
      * It sets the framerate to 60 FPS and sets up the main Game Loop (Update)
@@ -17,6 +20,8 @@ var Game = (function () {
         stage.enableMouseOver(20);
         currentSceneState = scenes.State.NO_SCENE;
         config.GameConfig.SCENE_STATE = scenes.State.START;
+        createjs.Sound.registerSound("./Assets/sounds/start.mp3", startSound);
+        createjs.Sound.registerSound("./Assets/sounds/background.mp3", backgroundSound);
     }
     /**
      * This function is triggered every frame (16ms)
@@ -37,18 +42,34 @@ var Game = (function () {
         }
         switch (config.GameConfig.SCENE_STATE) {
             case scenes.State.START:
+                createjs.Sound.stop();
                 currentScene = new scenes.Start();
                 break;
             case scenes.State.PLAY:
-                currentScene = new scenes.Play();
+                // play background music
+                createjs.Sound.play(backgroundSound, { loop: -1, volume: 0.5 });
+                playScene = new scenes.Play();
+                currentScene = playScene;
+                createjs.Sound.play(startSound);
                 break;
             case scenes.State.END:
+                createjs.Sound.stop();
                 currentScene = new scenes.End();
+                createjs.Sound.play(startSound);
                 break;
         }
         stage.addChild(currentScene);
         currentSceneState = config.GameConfig.SCENE_STATE;
     }
+    // add key event handler to make cheat code for jackpot
+    // if player pressed "J" key, next time player wins, it will give Jackpot for sure
+    window.addEventListener("keydown", function (event) {
+        if (currentSceneState == scenes.State.PLAY &&
+            playScene &&
+            event.keyCode == 74) {
+            playScene.jackpotCheat = true;
+        }
+    });
     window.addEventListener("load", Start);
 })();
 //# sourceMappingURL=game.js.map
