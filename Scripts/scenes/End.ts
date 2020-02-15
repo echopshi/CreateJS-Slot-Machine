@@ -8,9 +8,9 @@
 module scenes {
   export class End extends objects.Scene {
     // PRIVATE INSTANCE MEMEBERS
-    endBackground: objects.Button;
-    thankyouLabel: objects.Label;
-    restartButton: objects.Button;
+    private _endBackground: objects.Button;
+    private _thankyouLabel: objects.Label;
+    private _restartButton: objects.Button;
 
     // PUBLIC PROPERTIES
 
@@ -18,13 +18,13 @@ module scenes {
     constructor() {
       super();
 
-      this.endBackground = new objects.Button(
+      this._endBackground = new objects.Button(
         "./Assets/images/start-background.png",
         0,
         0,
         false
       );
-      this.thankyouLabel = new objects.Label(
+      this._thankyouLabel = new objects.Label(
         "Thank You for playing!",
         "42px",
         "Consolas",
@@ -33,7 +33,7 @@ module scenes {
         230,
         true
       );
-      this.restartButton = new objects.Button(
+      this._restartButton = new objects.Button(
         "./Assets/images/buttons/restart-button.png",
         380,
         450,
@@ -45,15 +45,15 @@ module scenes {
 
     // PUBLIC METHODS
     public Start(): void {
-      this.addChild(this.endBackground);
-      this.addChild(this.thankyouLabel);
-      this.addChild(this.restartButton);
+      this.addChild(this._endBackground);
+      this.addChild(this._thankyouLabel);
+      this.addChild(this._restartButton);
       this.Main();
     }
     public Update(): void {}
     public Main(): void {
-      this.restartButton.HoverOn();
-      this.restartButton.on("click", function() {
+      this._restartButton.HoverOn();
+      this._restartButton.on("click", function() {
         config.GameConfig.SCENE_STATE = scenes.State.PLAY;
       });
     }

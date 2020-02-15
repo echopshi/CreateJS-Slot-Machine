@@ -27,23 +27,23 @@ var scenes;
         // CONTRUCTOR
         function End() {
             var _this = _super.call(this) || this;
-            _this.endBackground = new objects.Button("./Assets/images/start-background.png", 0, 0, false);
-            _this.thankyouLabel = new objects.Label("Thank You for playing!", "42px", "Consolas", "Red", 380, 230, true);
-            _this.restartButton = new objects.Button("./Assets/images/buttons/restart-button.png", 380, 450, true);
+            _this._endBackground = new objects.Button("./Assets/images/start-background.png", 0, 0, false);
+            _this._thankyouLabel = new objects.Label("Thank You for playing!", "42px", "Consolas", "Red", 380, 230, true);
+            _this._restartButton = new objects.Button("./Assets/images/buttons/restart-button.png", 380, 450, true);
             _this.Start();
             return _this;
         }
         // PUBLIC METHODS
         End.prototype.Start = function () {
-            this.addChild(this.endBackground);
-            this.addChild(this.thankyouLabel);
-            this.addChild(this.restartButton);
+            this.addChild(this._endBackground);
+            this.addChild(this._thankyouLabel);
+            this.addChild(this._restartButton);
             this.Main();
         };
         End.prototype.Update = function () { };
         End.prototype.Main = function () {
-            this.restartButton.HoverOn();
-            this.restartButton.on("click", function () {
+            this._restartButton.HoverOn();
+            this._restartButton.on("click", function () {
                 config.GameConfig.SCENE_STATE = scenes.State.PLAY;
             });
         };

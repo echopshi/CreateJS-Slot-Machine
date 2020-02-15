@@ -27,23 +27,23 @@ var scenes;
         // CONTRUCTOR
         function Start() {
             var _this = _super.call(this) || this;
-            _this.startBackground = new objects.Button("./Assets/images/start-background.png", 0, 0, false);
-            _this.slotMachineGraphic = new objects.Button("./Assets/images/slotMachineHolder.png", 280, 200, false);
-            _this.startButton = new objects.Button("./Assets/images/buttons/start-button.png", 380, 450, true);
+            _this._startBackground = new objects.Button("./Assets/images/start-background.png", 0, 0, false);
+            _this._slotMachineGraphic = new objects.Button("./Assets/images/slotMachineHolder.png", 280, 200, false);
+            _this._startButton = new objects.Button("./Assets/images/buttons/start-button.png", 380, 450, true);
             _this.Start();
             return _this;
         }
         // PUBLIC METHODS
         Start.prototype.Start = function () {
-            this.addChild(this.startBackground);
-            this.addChild(this.slotMachineGraphic);
-            this.addChild(this.startButton);
+            this.addChild(this._startBackground);
+            this.addChild(this._slotMachineGraphic);
+            this.addChild(this._startButton);
             this.Main();
         };
         Start.prototype.Update = function () { };
         Start.prototype.Main = function () {
-            this.startButton.HoverOn();
-            this.startButton.on("click", function () {
+            this._startButton.HoverOn();
+            this._startButton.on("click", function () {
                 config.GameConfig.SCENE_STATE = scenes.State.PLAY;
             });
         };

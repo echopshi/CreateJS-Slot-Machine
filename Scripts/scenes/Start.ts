@@ -8,9 +8,9 @@
 module scenes {
   export class Start extends objects.Scene {
     // PRIVATE INSTANCE MEMEBERS
-    startBackground: objects.Button;
-    slotMachineGraphic: objects.Button;
-    startButton: objects.Button;
+    private _startBackground: objects.Button;
+    private _slotMachineGraphic: objects.Button;
+    private _startButton: objects.Button;
 
     // PUBLIC PROPERTIES
 
@@ -18,19 +18,19 @@ module scenes {
     constructor() {
       super();
 
-      this.startBackground = new objects.Button(
+      this._startBackground = new objects.Button(
         "./Assets/images/start-background.png",
         0,
         0,
         false
       );
-      this.slotMachineGraphic = new objects.Button(
+      this._slotMachineGraphic = new objects.Button(
         "./Assets/images/slotMachineHolder.png",
         280,
         200,
         false
       );
-      this.startButton = new objects.Button(
+      this._startButton = new objects.Button(
         "./Assets/images/buttons/start-button.png",
         380,
         450,
@@ -42,9 +42,9 @@ module scenes {
 
     // PUBLIC METHODS
     public Start(): void {
-      this.addChild(this.startBackground);
-      this.addChild(this.slotMachineGraphic);
-      this.addChild(this.startButton);
+      this.addChild(this._startBackground);
+      this.addChild(this._slotMachineGraphic);
+      this.addChild(this._startButton);
 
       this.Main();
     }
@@ -52,8 +52,8 @@ module scenes {
     public Update(): void {}
 
     public Main(): void {
-      this.startButton.HoverOn();
-      this.startButton.on("click", function() {
+      this._startButton.HoverOn();
+      this._startButton.on("click", function() {
         config.GameConfig.SCENE_STATE = scenes.State.PLAY;
       });
     }
